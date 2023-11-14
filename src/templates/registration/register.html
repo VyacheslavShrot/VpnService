@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .register-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .register-form h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .register-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .register-form form input,
+        .register-form form button {
+            margin-bottom: 10px;
+        }
+
+        .register-form form button {
+            background-color: #007BFF;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .register-form form button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+    <div class="register-form">
+        <h2>Register</h2>
+        <form method="post" action="{% url 'core:register' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="cta-button">Register</button>
+        </form>
+    </div>
+{% endblock %}

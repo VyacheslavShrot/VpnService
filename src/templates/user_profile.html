@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .user-profile {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-profile h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .user-profile p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .user-profile ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .user-profile li {
+            margin-bottom: 5px;
+        }
+
+        .user-data {
+            margin-bottom: 20px;
+        }
+
+        .user-changes {
+            margin-top: 20px;
+        }
+
+        .site-link {
+            text-decoration: none;
+        }
+
+        .site-button {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+
+    <div class="user-profile">
+        <h2>User Profile</h2>
+
+        <div class="user-data">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Name:</strong> {{ user_profile.name }}</p>
+            <p><strong>Email:</strong> {{ user_profile.email }}</p>
+        </div>
+
+        <div class="user-changes">
+            <h3>Edit Your Profile:</h3>
+            <form method="post" action="{% url 'core:user_profile' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="cta-button">Save Changes</button>
+            </form>
+        </div>
+
+        <h3>Your Sites:</h3>
+        <ul>
+            {% for site in user.userprofile.site_set.all %}
+                <li style="margin-top: 30px">
+                    <strong style="font-size: 30px">{{ site.name }}</strong><br>{{ site.url }}<br>
+                    <a class="site-link" href="{% url 'core:proxy_view' user_site_name=site.name routes_on_original_site=site.url %}">
+                        <button style="margin-top: 25px; margin-bottom: 25px" class="cta-button">Visit Site</button>
+                    </a>
+                    <p>Page Views: {{ site.trafficstatistics.page_views }}</p>
+                    <p>Data Sent: {{ site.trafficstatistics.data_sent }} KB</p>
+                    <p>Data Received: {{ site.trafficstatistics.data_received }} KB</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <a class="site-link" href="{% url 'core:create_site' %}">
+            <button style="margin-top: 25px" class="cta-button">Create Site</button>
+        </a>
+    </div>
+{% endblock %}
